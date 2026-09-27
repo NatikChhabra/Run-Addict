@@ -6,9 +6,15 @@
   "scripts": {
     "start": "npx serve .",
     "dev": "npx serve .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --check js/app.js && node --check js/admin.js && node --check sw.js && node --check api/admin-auth.example.js && node --check api/strava-exchange.example.js && node -e \"['manifest.json','assetlinks.json'].forEach(f=>JSON.parse(require('fs').readFileSync(f,'utf8')))\""
   },
-  "keywords": ["running", "strava", "pwa", "challenges", "fitness"],
+  "keywords": [
+    "running",
+    "strava",
+    "pwa",
+    "challenges",
+    "fitness"
+  ],
   "author": "Natik Chhabra",
   "license": "MIT",
   "type": "commonjs"

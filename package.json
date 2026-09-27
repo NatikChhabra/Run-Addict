@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": ["running", "strava", "pwa", "challenges", "fitness"],
-  "author": "",
-  "license": "ISC",
+  "author": "Natik Chhabra",
+  "license": "MIT",
   "type": "commonjs"
 }

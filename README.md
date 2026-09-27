@@ -1,37 +1,48 @@
 # Run Addict
 
-Run Addict is a mobile-first PWA for verified running challenges, Strava-powered activity sync, leaderboards, events, rewards, and admin fulfillment.
+A mobile-first PWA for verified running challenges. Runners sync activities from Strava, join distance / elevation / streak / pace challenges, climb leaderboards and claim rewards; admins publish challenges and ship rewards from a separate console.
 
-## Local Run
+**Live:** https://natikchhabra.github.io/Run-Addict/ &nbsp;·&nbsp; **Android:** [`RunAddict-signed.apk`](RunAddict-signed.apk)
 
-Serve the folder with any static server:
+## Features
+
+- **Verified activity sync** — Strava OAuth; only `Run`, `TrailRun` and `VirtualRun` activities inside the challenge window count.
+- **Anti-cheat review** — suspicious speeds, duplicate activity IDs and weak activity data are routed to admin review instead of the leaderboard.
+- **Challenges & events** — distance, elevation (summed `total_elevation_gain`), streak and pace challenges, plus race / club-run registration.
+- **Rewards fulfilment** — earned rewards collect delivery details; the admin console builds a shipping packet and tracks the parcel.
+- **Installable** — service worker + web manifest for offline shell and home-screen install; signed Android build via Trusted Web Activity.
+
+## Stack
+
+Vanilla HTML / CSS / JavaScript (no build step), service worker, Strava API, Google Identity. Two serverless examples in `api/` show the backend pieces that must not live in the browser (Strava token exchange, admin session gate).
+
+## Project layout
+
+```text
+index.html, js/app.js      runner app
+admin.html, js/admin.js    admin console
+css/styles.css             shared styles
+sw.js, manifest.json       PWA shell
+api/*.example.js           serverless routes to deploy separately
+assetlinks.json            Android TWA domain verification
+RunAddict-signed.apk/.aab  signed Android builds
+```
+
+## Run locally
 
 ```bash
 npx serve .
 ```
 
-Then open:
+Then open `index.html` (runner app) or `admin.html` (admin console).
 
-- User app: `index.html`
-- Admin console: `admin.html`
+## Deploying
 
-## Admin
+Strava and Google sign-in both need configuration (client IDs, an exchange endpoint for the Strava secret, authorised origins). Step-by-step notes are in [DEPLOYMENT.md](DEPLOYMENT.md).
 
-Temporary local admin credentials:
+> **Note:** the admin console's login is a client-side demo gate, not real authentication. Before running this with real users, put the admin route behind a server-side session — `api/admin-auth.example.js` is a starting point.
 
-- Username: `admin`
-- Password: `admin`
+## Installing on a phone
 
-For production, protect the admin route with a real backend/session gate. See `api/admin-auth.example.js`.
-
-## Connectors
-
-- Strava OAuth requires a backend exchange endpoint so the browser never exposes the Strava client secret.
-- Google sign-in requires a Google Web Client ID and authorized JavaScript origins.
-- Deployment details are in `DEPLOYMENT.md`.
-
-## Phone Install
-
-- iPhone: open the deployed URL in Safari, then Share > Add to Home Screen.
-- Android: open the deployed URL in Chrome, then Install app/Add to Home screen.
-- APK is Android-only; iPhone needs PWA install or a native iOS `.ipa`.
+- **Android:** install the APK above, or open the live URL in Chrome → *Install app*.
+- **iPhone:** open the live URL in Safari → Share → *Add to Home Screen*.
